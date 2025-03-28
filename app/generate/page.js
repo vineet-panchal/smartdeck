@@ -13,6 +13,9 @@ import Flashcard from "../components/Flashcard";
 import Footer from "../components/Footer";
 
 export default function Generate() {
+  if (typeof window !== 'undefined') {
+    
+  }
   const { user, isSignedIn,isLoaded} = useUser();
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState({});

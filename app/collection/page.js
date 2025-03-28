@@ -13,6 +13,9 @@ import Footer from "../components/Footer";
 import "@/app/css/collection.css";
 
 export default function Collection() {
+  if (typeof window !== 'undefined') {
+    
+  }
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
   const [flipped, setFlipped] = useState({});
