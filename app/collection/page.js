@@ -13,7 +13,7 @@ import Footer from "../components/Footer";
 import "@/app/css/collection.css";
 
 export default function Collection() {
-  if (typeof window !== 'undefined') {
+  // if (typeof window !== 'undefined') {
 
     const { isLoaded, isSignedIn, user } = useUser();
     const [flashcards, setFlashcards] = useState([]);
@@ -60,7 +60,7 @@ export default function Collection() {
       }));
     };
     
-  }
+  // }
   return (
     <>
       <Navbar active={active} icon={icon} toggle={navToggle} />

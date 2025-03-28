@@ -13,7 +13,7 @@ import Flashcard from "../components/Flashcard";
 import Footer from "../components/Footer";
 
 export default function Generate() {
-  if (typeof window !== 'undefined') {
+  // if (typeof window !== 'undefined') {
 
     const { user, isSignedIn,isLoaded} = useUser();
     const [flashcards, setFlashcards] = useState([]);
@@ -26,9 +26,9 @@ export default function Generate() {
     const [icon, setIcon] = useState("navbar-toggler");
     
     const navToggle = () => {
-      if (typeof window !== 'undefined') { // Check if running in the browser
+      // if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
-      } // Closing brace for navToggle
+      // } // Closing brace for navToggle
       if (active === "navbar-menu") {
         setActive("navbar-menu active");
       } else setActive("navbar-menu");
@@ -45,9 +45,9 @@ export default function Generate() {
     }, [isSignedIn, user, router]);
     
     const handleSubmit = async () => {
-      if (typeof window !== 'undefined') { // Check if running in the browser
+      // if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
-      } // Closing brace for handleSubmit
+      // } // Closing brace for handleSubmit
       const response = await fetch('/api/generate', {
         method: 'POST',
         body: JSON.stringify({ text }),
@@ -58,9 +58,9 @@ export default function Generate() {
     };
     
     const handleSave = async () => {
-      if (typeof window !== 'undefined') { // Check if running in the browser
+      // if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
-      } // Closing brace for handleSave
+      // } // Closing brace for handleSave
       if (!name.trim()) return alert("Please provide a name for your flashcard collection");
       
       const batch = writeBatch(db);
@@ -90,7 +90,7 @@ export default function Generate() {
       setModalOpen(false);
       router.push('/collections');
     }; 
-  }
+  // }
     
   const handleFlip = (index) => {
     setFlipped(prevState => ({

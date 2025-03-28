@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 import "@/app/css/collections.css";
 
 export default function Collections() {
-  if (typeof window !== 'undefined') { // Check if running in the browser
+  // if (typeof window !== 'undefined') { // Check if running in the browser
     const { isLoaded, isSignedIn, user } = useUser();
     const [flashcards, setFlashcards] = useState([]);
     const router = useRouter();
@@ -66,7 +66,7 @@ export default function Collections() {
       router.push(`/collection?id=${id}`);
     };
     
-  }
+  // }
   return (
     <>
       <section className="collections-ctr">
