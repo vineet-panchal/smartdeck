@@ -24,6 +24,9 @@ export default function Generate() {
   const [icon, setIcon] = useState("navbar-toggler");
 
   const navToggle = () => {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+        // existing code...
+    } // Closing brace for navToggle
     if (active === "navbar-menu") {
       setActive("navbar-menu active");
     } else setActive("navbar-menu");
@@ -31,7 +34,7 @@ export default function Generate() {
     if (icon === "navbar-toggler") {
       setIcon("navbar-toggler toggle");
     } else setIcon("navbar-toggler");
-  };
+  }; // Closing brace for navToggle
     
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
@@ -40,6 +43,9 @@ export default function Generate() {
   }, [isSignedIn, user, router]);
 
   const handleSubmit = async () => {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+        // existing code...
+    } // Closing brace for handleSubmit
     const response = await fetch('/api/generate', {
       method: 'POST',
       body: JSON.stringify({ text }),
@@ -50,6 +56,9 @@ export default function Generate() {
   };
 
   const handleSave = async () => {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+        // existing code...
+    } // Closing brace for handleSave
     if (!name.trim()) return alert("Please provide a name for your flashcard collection");
 
     const batch = writeBatch(db);
@@ -78,14 +87,14 @@ export default function Generate() {
     await batch.commit();
     setModalOpen(false);
     router.push('/collections');
-  };
+  }; // Closing brace for navToggle
 
   const handleFlip = (index) => {
     setFlipped(prevState => ({
       ...prevState,
       [index]: !prevState[index],
     }));
-  };
+  }; // Closing brace for navToggle
 
   return (
     <>
