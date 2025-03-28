@@ -12,61 +12,61 @@ import "@/app/css/collections.css";
 
 export default function Collections() {
   if (typeof window !== 'undefined') { // Check if running in the browser
-  }
-  const { isLoaded, isSignedIn, user } = useUser();
-  const [flashcards, setFlashcards] = useState([]);
-  const router = useRouter();
-  const [active, setActive] = useState("navbar-menu");
-  const [icon, setIcon] = useState("navbar-toggler");
-
-  const navToggle = () => {
-    if (typeof window !== 'undefined') { // Check if running in the browser
-    }
+    const { isLoaded, isSignedIn, user } = useUser();
+    const [flashcards, setFlashcards] = useState([]);
+    const router = useRouter();
+    const [active, setActive] = useState("navbar-menu");
+    const [icon, setIcon] = useState("navbar-toggler");
+    
+    const navToggle = () => {
+      if (typeof window !== 'undefined') { // Check if running in the browser
+      }
       if (active === "navbar-menu") {
-      setActive("navbar-menu active");
-    } else setActive("navbar-menu");
-
-    if (icon === "navbar-toggler") {
-      setIcon("navbar-toggler toggle");
-    } else setIcon("navbar-toggler");
-  };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') { // Check if running in the browser
-    }
-    async function getFlashcards() {
-      // If the user isn't signed in then send them back to the home page
-      if (isLoaded && !isSignedIn) {
-        return router.push('/');
+        setActive("navbar-menu active");
+      } else setActive("navbar-menu");
+      
+      if (icon === "navbar-toggler") {
+        setIcon("navbar-toggler toggle");
+      } else setIcon("navbar-toggler");
+    };
+    
+    useEffect(() => {
+      if (typeof window !== 'undefined') { // Check if running in the browser
       }
-      // Check if the doc/user exists
-      const docRef = doc(collection(db, 'users'), user.id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        // Get all collection names from doc
-        const collections = docSnap.data().flashcards || [];
-        setFlashcards(collections);
-      } else {
-        // Create the user account
-        await setDoc(docRef, { flashcards: [] });
+      async function getFlashcards() {
+        // If the user isn't signed in then send them back to the home page
+        if (isLoaded && !isSignedIn) {
+          return router.push('/');
+        }
+        // Check if the doc/user exists
+        const docRef = doc(collection(db, 'users'), user.id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          // Get all collection names from doc
+          const collections = docSnap.data().flashcards || [];
+          setFlashcards(collections);
+        } else {
+          // Create the user account
+          await setDoc(docRef, { flashcards: [] });
+        }
       }
+      if (isLoaded && isSignedIn && user) {
+        getFlashcards();
+      }
+    }, [user, isSignedIn, router, isLoaded]);
+    
+    // If the user signs out while on the page
+    if (!isLoaded || !isSignedIn) {
+      return null;
     }
-    if (isLoaded && isSignedIn && user) {
-      getFlashcards();
-    }
-  }, [user, isSignedIn, router, isLoaded]);
-
-  // If the user signs out while on the page
-  if (!isLoaded || !isSignedIn) {
-    return null;
+    
+    const handleCardClick = (id) => {
+      if (typeof window !== 'undefined') { // Check if running in the browser
+      }
+      router.push(`/collection?id=${id}`);
+    };
+    
   }
-
-  const handleCardClick = (id) => {
-    if (typeof window !== 'undefined') { // Check if running in the browser
-    }
-    router.push(`/collection?id=${id}`);
-  };
-
   return (
     <>
       <section className="collections-ctr">

@@ -14,53 +14,53 @@ import "@/app/css/collection.css";
 
 export default function Collection() {
   if (typeof window !== 'undefined') {
+
+    const { isLoaded, isSignedIn, user } = useUser();
+    const [flashcards, setFlashcards] = useState([]);
+    const [flipped, setFlipped] = useState({});
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const search = searchParams.get('id');
+    const [active, setActive] = useState("navbar-menu");
+    const [icon, setIcon] = useState("navbar-toggler");
+    
+    const navToggle = () => {
+      if (active === "navbar-menu") {
+        setActive("navbar-menu active");
+      } else setActive("navbar-menu");
+      
+      if (icon === "navbar-toggler") {
+        setIcon("navbar-toggler toggle");
+      } else setIcon("navbar-toggler");
+    };
+    
+    useEffect(() => {
+      async function getFlashcard() {
+        if (!isSignedIn) {
+          router.push('/');
+        }
+        
+        const colRef = collection(doc(collection(db, 'users'), user.id), search);
+        const docs = await getDocs(colRef);
+        const flashcards = [];
+        docs.forEach((doc) => {
+          flashcards.push({ id: doc.id, ...doc.data() });
+        });
+        setFlashcards(flashcards);
+      }
+      if (isLoaded && isSignedIn && user) {
+        getFlashcard();
+      }
+    }, [search, user, isSignedIn, router, isLoaded]);
+    
+    const handleCardClick = (id) => {
+      setFlipped((prev) => ({
+        ...prev,
+        [id]: !prev[id],
+      }));
+    };
     
   }
-  const { isLoaded, isSignedIn, user } = useUser();
-  const [flashcards, setFlashcards] = useState([]);
-  const [flipped, setFlipped] = useState({});
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const search = searchParams.get('id');
-  const [active, setActive] = useState("navbar-menu");
-  const [icon, setIcon] = useState("navbar-toggler");
-  
-  const navToggle = () => {
-    if (active === "navbar-menu") {
-      setActive("navbar-menu active");
-    } else setActive("navbar-menu");
-
-    if (icon === "navbar-toggler") {
-      setIcon("navbar-toggler toggle");
-    } else setIcon("navbar-toggler");
-  };
-
-  useEffect(() => {
-    async function getFlashcard() {
-      if (!isSignedIn) {
-        router.push('/');
-      }
-
-      const colRef = collection(doc(collection(db, 'users'), user.id), search);
-      const docs = await getDocs(colRef);
-      const flashcards = [];
-      docs.forEach((doc) => {
-        flashcards.push({ id: doc.id, ...doc.data() });
-      });
-      setFlashcards(flashcards);
-    }
-    if (isLoaded && isSignedIn && user) {
-      getFlashcard();
-    }
-  }, [search, user, isSignedIn, router, isLoaded]);
-
-  const handleCardClick = (id) => {
-    setFlipped((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
   return (
     <>
       <Navbar active={active} icon={icon} toggle={navToggle} />

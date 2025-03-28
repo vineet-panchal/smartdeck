@@ -14,84 +14,84 @@ import Footer from "../components/Footer";
 
 export default function Generate() {
   if (typeof window !== 'undefined') {
+
+    const { user, isSignedIn,isLoaded} = useUser();
+    const [flashcards, setFlashcards] = useState([]);
+    const [flipped, setFlipped] = useState({});
+    const [text, setText] = useState('');
+    const [name, setName] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
+    const router = useRouter();
+    const [active, setActive] = useState("navbar-menu");
+    const [icon, setIcon] = useState("navbar-toggler");
     
-  }
-  const { user, isSignedIn,isLoaded} = useUser();
-  const [flashcards, setFlashcards] = useState([]);
-  const [flipped, setFlipped] = useState({});
-  const [text, setText] = useState('');
-  const [name, setName] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const router = useRouter();
-  const [active, setActive] = useState("navbar-menu");
-  const [icon, setIcon] = useState("navbar-toggler");
-
-  const navToggle = () => {
-    if (typeof window !== 'undefined') { // Check if running in the browser
+    const navToggle = () => {
+      if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
-    } // Closing brace for navToggle
-    if (active === "navbar-menu") {
-      setActive("navbar-menu active");
-    } else setActive("navbar-menu");
-
-    if (icon === "navbar-toggler") {
-      setIcon("navbar-toggler toggle");
-    } else setIcon("navbar-toggler");
-  }; // Closing brace for navToggle
+      } // Closing brace for navToggle
+      if (active === "navbar-menu") {
+        setActive("navbar-menu active");
+      } else setActive("navbar-menu");
+      
+      if (icon === "navbar-toggler") {
+        setIcon("navbar-toggler toggle");
+      } else setIcon("navbar-toggler");
+    }; // Closing brace for navToggle
     
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push('/');
-    }
-  }, [isSignedIn, user, router]);
-
-  const handleSubmit = async () => {
-    if (typeof window !== 'undefined') { // Check if running in the browser
-        // existing code...
-    } // Closing brace for handleSubmit
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      body: JSON.stringify({ text }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await response.json();
-    setFlashcards(data || []);
-  };
-
-  const handleSave = async () => {
-    if (typeof window !== 'undefined') { // Check if running in the browser
-        // existing code...
-    } // Closing brace for handleSave
-    if (!name.trim()) return alert("Please provide a name for your flashcard collection");
-
-    const batch = writeBatch(db);
-    const userDocRef = doc(collection(db, 'users'), user.id);
-    const userDocSnap = await getDoc(userDocRef);
-
-    if (userDocSnap.exists()) {
-      const collections = userDocSnap.data().flashcards || [];
-      if (collections.find((f) => f.name === name)) {
-        alert("A flashcard collection with that name already exists.");
-        return;
-      } else {
-        collections.push({ name });
-        batch.set(userDocRef, { flashcards: collections }, { merge: true });
+    useEffect(() => {
+      if (isLoaded && !isSignedIn) {
+        router.push('/');
       }
-    } else {
-      batch.set(userDocRef, { flashcards: [{ name }] });
-    }
-
-    const colRef = collection(userDocRef, name);
-    flashcards.forEach((flashcard) => {
-      const cardDocRef = doc(colRef);
-      batch.set(cardDocRef, flashcard);
-    });
-
-    await batch.commit();
-    setModalOpen(false);
-    router.push('/collections');
-  }; // Closing brace for navToggle
-
+    }, [isSignedIn, user, router]);
+    
+    const handleSubmit = async () => {
+      if (typeof window !== 'undefined') { // Check if running in the browser
+        // existing code...
+      } // Closing brace for handleSubmit
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        body: JSON.stringify({ text }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      setFlashcards(data || []);
+    };
+    
+    const handleSave = async () => {
+      if (typeof window !== 'undefined') { // Check if running in the browser
+        // existing code...
+      } // Closing brace for handleSave
+      if (!name.trim()) return alert("Please provide a name for your flashcard collection");
+      
+      const batch = writeBatch(db);
+      const userDocRef = doc(collection(db, 'users'), user.id);
+      const userDocSnap = await getDoc(userDocRef);
+      
+      if (userDocSnap.exists()) {
+        const collections = userDocSnap.data().flashcards || [];
+        if (collections.find((f) => f.name === name)) {
+          alert("A flashcard collection with that name already exists.");
+          return;
+        } else {
+          collections.push({ name });
+          batch.set(userDocRef, { flashcards: collections }, { merge: true });
+        }
+      } else {
+        batch.set(userDocRef, { flashcards: [{ name }] });
+      }
+      
+      const colRef = collection(userDocRef, name);
+      flashcards.forEach((flashcard) => {
+        const cardDocRef = doc(colRef);
+        batch.set(cardDocRef, flashcard);
+      });
+      
+      await batch.commit();
+      setModalOpen(false);
+      router.push('/collections');
+    }; 
+  }
+    
   const handleFlip = (index) => {
     setFlipped(prevState => ({
       ...prevState,
