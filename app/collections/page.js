@@ -18,7 +18,9 @@ export default function Collections() {
   const [icon, setIcon] = useState("navbar-toggler");
 
   const navToggle = () => {
-    if (active === "navbar-menu") {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+    }
+      if (active === "navbar-menu") {
       setActive("navbar-menu active");
     } else setActive("navbar-menu");
 
@@ -28,6 +30,8 @@ export default function Collections() {
   };
 
   useEffect(() => {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+    }
     async function getFlashcards() {
       // If the user isn't signed in then send them back to the home page
       if (isLoaded && !isSignedIn) {
@@ -56,6 +60,8 @@ export default function Collections() {
   }
 
   const handleCardClick = (id) => {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+    }
     router.push(`/collection?id=${id}`);
   };
 
@@ -84,31 +90,6 @@ export default function Collections() {
         </div>
         <Footer />
       </section>
-
-            {/* Flashcards Grid */}
-            {/* <Grid container spacing={4}>
-              {flashcards.map((flashcard) => (
-                <Grid item xs={12} sm={6} md={4} key={flashcard.name}>
-                  <Card className="collection-card"
-                    sx={{
-                      // height: '100%',
-                      // display: 'flex',
-                      // flexDirection: 'column',
-                      // borderRadius: 2,
-                      // boxShadow: 3,
-                    }}
-                    >
-                    <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
-                      <CardContent>
-                        <Typography variant="h5" component="div" sx={{ textAlign: 'center' }}>
-                          {flashcard.name}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid> */}
     </>
   );
 }
