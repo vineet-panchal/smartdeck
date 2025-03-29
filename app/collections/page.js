@@ -19,8 +19,8 @@ export default function Collections() {
     const [icon, setIcon] = useState("navbar-toggler");
     
     const navToggle = () => {
-      if (typeof window !== 'undefined') { // Check if running in the browser
-      }
+      // if (typeof window !== 'undefined') { // Check if running in the browser
+      // }
       if (active === "navbar-menu") {
         setActive("navbar-menu active");
       } else setActive("navbar-menu");
@@ -31,8 +31,8 @@ export default function Collections() {
     };
     
     useEffect(() => {
-      if (typeof window !== 'undefined') { // Check if running in the browser
-      }
+      // if (typeof window !== 'undefined') { // Check if running in the browser
+      // }
       async function getFlashcards() {
         // If the user isn't signed in then send them back to the home page
         if (isLoaded && !isSignedIn) {
@@ -61,8 +61,8 @@ export default function Collections() {
     }
     
     const handleCardClick = (id) => {
-      if (typeof window !== 'undefined') { // Check if running in the browser
-      }
+      // if (typeof window !== 'undefined') { // Check if running in the browser
+      // }
       router.push(`/collection?id=${id}`);
     };
     
