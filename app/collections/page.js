@@ -3,7 +3,7 @@ import { useUser,SignedIn, SignedOut, UserButton, } from "@clerk/nextjs";
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import db from '@/firebase';
+// import db from '@/firebase';
 import { Container, Grid, Card, CardContent, Typography, CardActionArea, Box, Paper, AppBar, Toolbar, Button, Switch, CssBaseline, ThemeProvider } from '@mui/material';
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";

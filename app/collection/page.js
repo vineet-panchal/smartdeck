@@ -5,7 +5,7 @@ import { collection, doc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Container, Grid, Card, CardContent, Typography, CardActionArea, Box, AppBar, Toolbar, Button, Switch } from '@mui/material';
-import db from '@/firebase';
+// import db from '@/firebase';
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
 import Flashcard from "../components/Flashcard";

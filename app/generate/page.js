@@ -5,7 +5,7 @@ import { collection, doc, setDoc, getDoc, writeBatch } from "firebase/firestore"
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { Grid, Typography, TextField, Box, Button, Modal } from '@mui/material';
-import db from '@/firebase';
+// import db from '@/firebase';
 import "@/app/css/generate.css";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";

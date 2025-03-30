@@ -26,7 +26,7 @@ if (typeof window !== "undefined") {
   // Check if Firebase app already exists to avoid re-initialization
   if (!getApps().length) {
     app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
+    // db = getFirestore(app);
   } else {
     app = getApps()[0];
   }
