@@ -1,7 +1,7 @@
 import { Ubuntu } from "next/font/google";
 import {ClerkProvider} from '@clerk/nextjs'
 import './globals.css'
-import { Analytics } from "@vercel/analytics/react"
+// import { Analytics } from "@vercel/analytics/react"
 
 const ubuntu = Ubuntu({ subsets: ["latin"], weight:['300', '400', '500', '700'] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={ubuntu.className}>{children}</body>
-        <Analytics />
+        {/* <Analytics /> */}
       </html>
     </ClerkProvider>
   );
