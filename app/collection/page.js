@@ -12,6 +12,10 @@ import Flashcard from "../components/Flashcard";
 import Footer from "../components/Footer";
 import "@/app/css/collection.css";
 
+import dynamic from "next/dynamic";
+
+const db = dynamic(() => import('@/firebase'), { ssr: false });
+
 export default function Collection() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [flashcards, setFlashcards] = useState([]);
@@ -36,9 +40,16 @@ export default function Collection() {
     async function getFlashcard() {
       if (!isSignedIn) {
         router.push('/');
+        return;
       }
-        
-      const colRef = collection(doc(collection(db, 'users'), user.id), search);
+      
+      const firebaseDB = await db;
+      if (!firebaseDB) {
+        console.error("Firebase DB is not initialized");
+        return;
+      }
+
+      const colRef = collection(doc(collection(firebaseDB, 'users'), user.id), search);
       const docs = await getDocs(colRef);
       const flashcards = [];
       docs.forEach((doc) => {

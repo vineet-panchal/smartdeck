@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -17,9 +17,25 @@ const firebaseConfig = {
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
+// new changes
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
+let app;
+let db;
+
+if (typeof window !== "undefined") {
+  // Check if Firebase app already exists to avoid re-initialization
+  if (!getApps().length) {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+  } else {
+    app = getApps()[0];
+  }
+  db = getFirestore(app);
+}
+
+// old edits
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+// const db = getFirestore(app);
 
 export default db;

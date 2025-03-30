@@ -12,6 +12,10 @@ import Header from "../components/Header";
 import Flashcard from "../components/Flashcard";
 import Footer from "../components/Footer";
 
+import dynamic from "next/dynamic";
+
+const db = dynamic(() => import('@/firebase'), { ssr: false });
+
 export default function Generate() {
   // if (typeof window !== 'undefined') {
 
@@ -63,8 +67,14 @@ export default function Generate() {
       // } // Closing brace for handleSave
       if (!name.trim()) return alert("Please provide a name for your flashcard collection");
       
-      const batch = writeBatch(db);
-      const userDocRef = doc(collection(db, 'users'), user.id);
+      const firebaseDB = await db;
+      if (!firebaseDB) {
+        alert("Error: unable to connect to Firebase");
+        return;
+      }
+
+      const batch = writeBatch(firebaseDB);
+      const userDocRef = doc(collection(firebaseDB, 'users'), user.id);
       const userDocSnap = await getDoc(userDocRef);
       
       if (userDocSnap.exists()) {
