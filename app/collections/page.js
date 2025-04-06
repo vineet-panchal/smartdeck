@@ -10,9 +10,11 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "@/app/css/collections.css";
 
-import dynamic from "next/dynamic";
+import getFirestore from "@/firebase";
 
-const db = dynamic(() => import('@/firebase'), { ssr: false });
+// import dynamic from "next/dynamic";
+
+// const db = dynamic(() => import('@/firebase'), { ssr: false });
 
 export default function Collections() {
   // if (typeof window !== 'undefined') { // Check if running in the browser
@@ -43,13 +45,19 @@ export default function Collections() {
           return router.push('/');
         }
 
-        const firebaseDB = await db;
-        if (!firebaseDB) {
-          console.error("Firebase DB is not initialized");
+        const db = getFirestore();
+        if (!db) {
+          console.error("Firestore DB is not initialized.");
           return;
         }
+
+        // const firebaseDB = await db;
+        // if (!firebaseDB) {
+        //   console.error("Firebase DB is not initialized");
+        //   return;
+        // }
         // Check if the doc/user exists
-        const docRef = doc(collection(firebaseDB, 'users'), user.id);
+        const docRef = doc(collection(db, 'users'), user.id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           // Get all collection names from doc

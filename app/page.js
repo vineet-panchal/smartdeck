@@ -14,6 +14,8 @@ import Features from './components/Features';
 import Footer from './components/Footer';
 import './css/landing-page.css'; 
 
+import getFirestore from '@/firebase';
+
 export default function Home() {
   const { isSignedIn, isLoaded, user } = useUser();
   const router = useRouter();

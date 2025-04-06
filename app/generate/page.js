@@ -12,94 +12,102 @@ import Header from "../components/Header";
 import Flashcard from "../components/Flashcard";
 import Footer from "../components/Footer";
 
-import dynamic from "next/dynamic";
+import getFirestore from "@/firebase";
 
-const db = dynamic(() => import('@/firebase'), { ssr: false });
+// import dynamic from "next/dynamic";
+
+// const db = dynamic(() => import('@/firebase'), { ssr: false });
 
 export default function Generate() {
   // if (typeof window !== 'undefined') {
 
-    const { user, isSignedIn,isLoaded} = useUser();
-    const [flashcards, setFlashcards] = useState([]);
-    const [flipped, setFlipped] = useState({});
-    const [text, setText] = useState('');
-    const [name, setName] = useState('');
-    const [modalOpen, setModalOpen] = useState(false);
-    const router = useRouter();
-    const [active, setActive] = useState("navbar-menu");
-    const [icon, setIcon] = useState("navbar-toggler");
+  const { user, isSignedIn,isLoaded} = useUser();
+  const [flashcards, setFlashcards] = useState([]);
+  const [flipped, setFlipped] = useState({});
+  const [text, setText] = useState('');
+  const [name, setName] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
+  const [active, setActive] = useState("navbar-menu");
+  const [icon, setIcon] = useState("navbar-toggler");
     
-    const navToggle = () => {
+  const navToggle = () => {
       // if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
       // } // Closing brace for navToggle
-      if (active === "navbar-menu") {
-        setActive("navbar-menu active");
-      } else setActive("navbar-menu");
+    if (active === "navbar-menu") {
+      setActive("navbar-menu active");
+    } else setActive("navbar-menu");
       
-      if (icon === "navbar-toggler") {
-        setIcon("navbar-toggler toggle");
-      } else setIcon("navbar-toggler");
-    }; // Closing brace for navToggle
+    if (icon === "navbar-toggler") {
+      setIcon("navbar-toggler toggle");
+    } else setIcon("navbar-toggler");
+  }; // Closing brace for navToggle
     
-    useEffect(() => {
-      if (isLoaded && !isSignedIn) {
-        router.push('/');
-      }
-    }, [isSignedIn, user, router]);
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push('/');
+    }
+  }, [isSignedIn, user, router]);
     
-    const handleSubmit = async () => {
+  const handleSubmit = async () => {
       // if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
       // } // Closing brace for handleSubmit
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        body: JSON.stringify({ text }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      const data = await response.json();
-      setFlashcards(data || []);
-    };
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      body: JSON.stringify({ text }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await response.json();
+    setFlashcards(data || []);
+  };
     
-    const handleSave = async () => {
+  const handleSave = async () => {
       // if (typeof window !== 'undefined') { // Check if running in the browser
         // existing code...
       // } // Closing brace for handleSave
-      if (!name.trim()) return alert("Please provide a name for your flashcard collection");
-      
-      const firebaseDB = await db;
-      if (!firebaseDB) {
-        alert("Error: unable to connect to Firebase");
-        return;
-      }
+    if (!name.trim()) return alert("Please provide a name for your flashcard collection");
+    
+    const db = getFirestore();
+    if (!db) {
+      alert("Error: unable to connect to Firestore");
+      return;
+    }
 
-      const batch = writeBatch(firebaseDB);
-      const userDocRef = doc(collection(firebaseDB, 'users'), user.id);
-      const userDocSnap = await getDoc(userDocRef);
+      // const firebaseDB = await db;
+      // if (!firebaseDB) {
+      //   alert("Error: unable to connect to Firebase");
+      //   return;
+      // }
+
+    const batch = writeBatch(db);
+    const userDocRef = doc(collection(db, 'users'), user.id);
+    const userDocSnap = await getDoc(userDocRef);
       
-      if (userDocSnap.exists()) {
-        const collections = userDocSnap.data().flashcards || [];
-        if (collections.find((f) => f.name === name)) {
-          alert("A flashcard collection with that name already exists.");
-          return;
-        } else {
-          collections.push({ name });
-          batch.set(userDocRef, { flashcards: collections }, { merge: true });
-        }
+    if (userDocSnap.exists()) {
+      const collections = userDocSnap.data().flashcards || [];
+      if (collections.find((f) => f.name === name)) {
+        alert("A flashcard collection with that name already exists.");
+        return;
       } else {
-        batch.set(userDocRef, { flashcards: [{ name }] });
+        collections.push({ name });
+        batch.set(userDocRef, { flashcards: collections }, { merge: true });
       }
+    } else {
+      batch.set(userDocRef, { flashcards: [{ name }] });
+    }
       
-      const colRef = collection(userDocRef, name);
-      flashcards.forEach((flashcard) => {
-        const cardDocRef = doc(colRef);
-        batch.set(cardDocRef, flashcard);
-      });
+    const colRef = collection(userDocRef, name);
+    flashcards.forEach((flashcard) => {
+      const cardDocRef = doc(colRef);
+      batch.set(cardDocRef, flashcard);
+    });
       
-      await batch.commit();
-      setModalOpen(false);
-      router.push('/collections');
-    }; 
+    await batch.commit();
+    setModalOpen(false);
+    router.push('/collections');
+  }; 
   // }
     
   const handleFlip = (index) => {
