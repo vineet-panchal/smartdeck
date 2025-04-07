@@ -5,8 +5,15 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
-
+First, clone the Github project: 
+```bash
+git clone https://github.com/vineet-panchal/smartdeck.git
+```
+Then,  install all node modules and libraries required: 
+```bash
+git install
+```
+Finally, run the development server:
 ```bash
 npm run dev
 # or
