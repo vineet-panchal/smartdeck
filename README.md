@@ -1,5 +1,5 @@
-# smartdeck - CPS406 Final Project
-
+# SmartDeck - CPS406 Final Project
+An SaaS project equipped with an AI flashcards creator to help students study for any course, just with a simple prompt.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
