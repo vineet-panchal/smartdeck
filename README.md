@@ -9,6 +9,9 @@ First, clone the Github project:
 ```bash
 git clone https://github.com/vineet-panchal/smartdeck.git
 ```
+```bash
+cd smartdeck
+```
 Then,  install all node modules and libraries required: 
 ```bash
 git install
