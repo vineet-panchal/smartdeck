@@ -9,6 +9,7 @@ First, clone the Github project:
 ```bash
 git clone https://github.com/vineet-panchal/smartdeck.git
 ```
+Then, go to the project directory:
 ```bash
 cd smartdeck
 ```
